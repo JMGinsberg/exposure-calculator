@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exposure Years Calculator</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #f5f5f3;
+    color: #1a1a1a;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+
+  .page {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .header {
+    margin-bottom: 1.75rem;
+  }
+
+  .header h1 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 6px;
+    letter-spacing: -0.3px;
+  }
+
+  .header p {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.5;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e8e8e6;
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+
+  thead th {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #888;
+    padding: 10px 12px;
+    background: #fafaf9;
+    border-bottom: 1px solid #e8e8e6;
+    text-align: left;
+  }
+
+  thead th:nth-child(1) { width: 40px; text-align: center; }
+  thead th:nth-child(2) { width: 26%; }
+  thead th:nth-child(3) { width: 26%; }
+  thead th:nth-child(4) { width: 20%; text-align: center; }
+  thead th:nth-child(5) { width: 40px; }
+
+  tbody tr {
+    border-bottom: 1px solid #f0f0ee;
+    transition: background 0.1s;
+  }
+
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: #fafaf9; }
+
+  td {
+    padding: 7px 8px;
+    vertical-align: middle;
+  }
+
+  td:first-child {
+    font-size: 12px;
+    color: #bbb;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  td input[type="number"] {
+    width: 100%;
+    padding: 6px 10px;
+    font-size: 14px;
+    border: 1px solid #e0e0de;
+    border-radius: 7px;
+    background: #fff;
+    color: #1a1a1a;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    -moz-appearance: textfield;
+  }
+
+  td input[type="number"]::-webkit-inner-spin-button,
+  td input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+  td input[type="number"]:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  }
+
+  td input[type="number"].input-err {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.08);
+  }
+
+  .valid-cell {
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .valid-empty { color: #ccc; font-weight: 400; }
+  .valid-ok { color: #16a34a; }
+  .valid-zero { color: #aaa; font-weight: 400; }
+  .valid-err { color: #ef4444; font-size: 11px; font-weight: 500; }
+
+  .del-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #ccc;
+    padding: 5px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    transition: background 0.15s, color 0.15s;
+    margin: 0 auto;
+  }
+
+  .del-btn:hover { background: #fef2f2; color: #ef4444; }
+
+  .add-btn {
+    width: 100%;
+    padding: 10px;
+    border: 1.5px dashed #e0e0de;
+    border-radius: 12px;
+    background: none;
+    color: #888;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+    margin-bottom: 1.25rem;
+  }
+
+  .add-btn:hover {
+    border-color: #2563eb;
+    background: #eff6ff;
+    color: #2563eb;
+  }
+
+  .result-card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e8e8e6;
+    padding: 1.1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 10px;
+  }
+
+  .result-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #888;
+    margin-bottom: 4px;
+  }
+
+  .result-num {
+    font-size: 40px;
+    font-weight: 700;
+    color: #1a1a1a;
+    line-height: 1;
+    letter-spacing: -1px;
+  }
+
+  .result-sub {
+    font-size: 12px;
+    color: #888;
+    margin-top: 4px;
+    min-height: 16px;
+  }
+
+  .result-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    flex-shrink: 0;
+  }
+
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 7px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+    font-family: inherit;
+  }
+
+  .btn-copy {
+    background: #1a1a1a;
+    color: #fff;
+    border: 1px solid #1a1a1a;
+  }
+
+  .btn-copy:hover { background: #333; border-color: #333; }
+
+  .btn-copy.copied {
+    background: #16a34a;
+    border-color: #16a34a;
+  }
+
+  .btn-clear {
+    background: #fff;
+    color: #888;
+    border: 1px solid #e0e0de;
+  }
+
+  .btn-clear:hover { background: #fef2f2; color: #ef4444; border-color: #fca5a5; }
+
+  .footer-note {
+    font-size: 12px;
+    color: #aaa;
+    display: flex;
+    align-items: flex-start;
+    gap: 5px;
+    line-height: 1.5;
+    padding: 0 2px;
+  }
+
+  .footer-note i { margin-top: 1px; flex-shrink: 0; }
+
+  @media (max-width: 480px) {
+    body { padding: 1rem 0.75rem; }
+    .result-card { flex-direction: column; align-items: flex-start; }
+    .result-actions { flex-direction: row; width: 100%; }
+    .btn { flex: 1; }
+    thead th:nth-child(2),
+    thead th:nth-child(3) { width: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <h1>Exposure years calculator</h1>
+    <p>Enter start and end years for each exposure period. Overlapping periods are merged automatically. Years after 1982 are excluded from the total.</p>
+  </div>
+
+  <div class="card">
+    <table id="periods-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Start year</th>
+          <th>End year</th>
+          <th>Eligible yrs</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="rows-body"></tbody>
+    </table>
+  </div>
+
+  <button class="add-btn" onclick="addRow()" aria-label="Add exposure period">
+    <i class="ti ti-plus" style="font-size:15px" aria-hidden="true"></i>
+    Add period
+  </button>
+
+  <div class="result-card">
+    <div>
+      <div class="result-label">Total unique eligible years</div>
+      <div class="result-num" id="total-display">0</div>
+      <div class="result-sub" id="result-sub"></div>
+    </div>
+    <div class="result-actions">
+      <button class="btn btn-copy" id="copy-btn" onclick="copyResult()" aria-label="Copy result to clipboard">
+        <i class="ti ti-copy" style="font-size:14px" aria-hidden="true"></i>
+        Copy result
+      </button>
+      <button class="btn btn-clear" onclick="clearAll()" aria-label="Clear all periods">
+        <i class="ti ti-trash" style="font-size:14px" aria-hidden="true"></i>
+        Clear all
+      </button>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    <i class="ti ti-info-circle" style="font-size:13px" aria-hidden="true"></i>
+    End years after 1982 are automatically capped to 1982. Periods starting after 1982 contribute 0 eligible years.
+  </div>
+
+</div>
+
+<script>
+  const CAP = 1982;
+  let rowId = 0;
+
+  function addRow(s, e) {
+    rowId++;
+    const id = rowId;
+    const tbody = document.getElementById('rows-body');
+    const tr = document.createElement('tr');
+    tr.id = 'row-' + id;
+    tr.innerHTML =
+      '<td class="row-num"></td>' +
+      '<td><input type="number" id="s' + id + '" placeholder="e.g. 1968" min="1900" max="2100"' +
+        (s ? ' value="' + s + '"' : '') +
+        ' oninput="recalc()" aria-label="Start year"></td>' +
+      '<td><input type="number" id="e' + id + '" placeholder="e.g. 1979" min="1900" max="2100"' +
+        (e ? ' value="' + e + '"' : '') +
+        ' oninput="recalc()" aria-label="End year"></td>' +
+      '<td class="valid-cell valid-empty" id="v' + id + '">—</td>' +
+      '<td><button class="del-btn" onclick="delRow(' + id + ')" aria-label="Remove this period">' +
+        '<i class="ti ti-x" style="font-size:13px" aria-hidden="true"></i></button></td>';
+    tbody.appendChild(tr);
+    renumber();
+    recalc();
+    if (!s) document.getElementById('s' + id).focus();
+  }
+
+  function delRow(id) {
+    const el = document.getElementById('row-' + id);
+    if (el) el.remove();
+    renumber();
+    recalc();
+  }
+
+  function renumber() {
+    document.querySelectorAll('#rows-body tr').forEach(function(tr, i) {
+      tr.querySelector('.row-num').textContent = i + 1;
+    });
+  }
+
+  function rowEligible(s, e) {
+    if (isNaN(s) || isNaN(e)) return null;
+    if (s > e) return 'err';
+    if (s > CAP) return 0;
+    return Math.min(e, CAP) - s + 1;
+  }
+
+  function recalc() {
+    var rows = document.querySelectorAll('#rows-body tr');
+    var intervals = [];
+
+    rows.forEach(function(tr) {
+      var id = tr.id.replace('row-', '');
+      var si = document.getElementById('s' + id);
+      var ei = document.getElementById('e' + id);
+      var cell = document.getElementById('v' + id);
+      if (!si || !ei || !cell) return;
+
+      var s = parseInt(si.value);
+      var e = parseInt(ei.value);
+      var res = rowEligible(s, e);
+
+      si.classList.remove('input-err');
+      ei.classList.remove('input-err');
+
+      if (res === null) {
+        cell.textContent = '—';
+        cell.className = 'valid-cell valid-empty';
+      } else if (res === 'err') {
+        cell.textContent = 'Check years';
+        cell.className = 'valid-cell valid-err';
+        si.classList.add('input-err');
+        ei.classList.add('input-err');
+      } else if (res === 0) {
+        cell.textContent = '0';
+        cell.className = 'valid-cell valid-zero';
+      } else {
+        cell.textContent = res;
+        cell.className = 'valid-cell valid-ok';
+        intervals.push([s, Math.min(e, CAP)]);
+      }
+    });
+
+    var total = mergeIntervals(intervals);
+    document.getElementById('total-display').textContent = total;
+
+    var sub = document.getElementById('result-sub');
+    if (total > 0 && intervals.length > 1) {
+      var raw = intervals.reduce(function(acc, iv) { return acc + (iv[1] - iv[0] + 1); }, 0);
+      var saved = raw - total;
+      sub.textContent = saved > 0
+        ? saved + ' overlapping year' + (saved === 1 ? '' : 's') + ' merged'
+        : '';
+    } else {
+      sub.textContent = '';
+    }
+  }
+
+  function mergeIntervals(ivs) {
+    if (!ivs.length) return 0;
+    ivs.sort(function(a, b) { return a[0] - b[0]; });
+    var total = 0, cs = ivs[0][0], ce = ivs[0][1];
+    for (var i = 1; i < ivs.length; i++) {
+      if (ivs[i][0] <= ce + 1) {
+        ce = Math.max(ce, ivs[i][1]);
+      } else {
+        total += ce - cs + 1;
+        cs = ivs[i][0]; ce = ivs[i][1];
+      }
+    }
+    return total + (ce - cs + 1);
+  }
+
+  function copyResult() {
+    var val = document.getElementById('total-display').textContent;
+    var btn = document.getElementById('copy-btn');
+    navigator.clipboard.writeText(val).then(function() {
+      btn.classList.add('copied');
+      btn.innerHTML = '<i class="ti ti-check" style="font-size:14px" aria-hidden="true"></i> Copied!';
+      setTimeout(function() {
+        btn.classList.remove('copied');
+        btn.innerHTML = '<i class="ti ti-copy" style="font-size:14px" aria-hidden="true"></i> Copy result';
+      }, 2000);
+    });
+  }
+
+  function clearAll() {
+    document.getElementById('rows-body').innerHTML = '';
+    rowId = 0;
+    document.getElementById('total-display').textContent = '0';
+    document.getElementById('result-sub').textContent = '';
+    addRow(); addRow(); addRow();
+  }
+
+  addRow(); addRow(); addRow();
+</script>
+</body>
+</html>
