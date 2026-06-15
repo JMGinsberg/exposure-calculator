@@ -19,16 +19,10 @@
   .page { max-width: 680px; margin: 0 auto; }
 
   .header { margin-bottom: 1.75rem; }
-  .header h1 {
-    font-size: 22px; font-weight: 600; color: #1a1a1a;
-    margin-bottom: 6px; letter-spacing: -0.3px;
-  }
+  .header h1 { font-size: 22px; font-weight: 600; color: #1a1a1a; margin-bottom: 6px; letter-spacing: -0.3px; }
   .header p { font-size: 13px; color: #666; line-height: 1.5; }
 
-  .card {
-    background: #fff; border-radius: 12px;
-    border: 1px solid #e8e8e6; overflow: hidden; margin-bottom: 10px;
-  }
+  .card { background: #fff; border-radius: 12px; border: 1px solid #e8e8e6; overflow: hidden; margin-bottom: 10px; }
 
   table { width: 100%; border-collapse: collapse; table-layout: fixed; }
 
@@ -59,13 +53,8 @@
   }
   td input[type="number"]::-webkit-inner-spin-button,
   td input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
-  td input[type="number"]:focus {
-    outline: none; border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
-  }
-  td input[type="number"].input-err {
-    border-color: #ef4444; box-shadow: 0 0 0 3px rgba(239,68,68,0.08);
-  }
+  td input[type="number"]:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+  td input[type="number"].input-err { border-color: #ef4444; box-shadow: 0 0 0 3px rgba(239,68,68,0.08); }
 
   .valid-cell { text-align: center; font-size: 14px; font-weight: 600; }
   .valid-empty { color: #ccc; font-weight: 400; }
@@ -84,26 +73,23 @@
   .add-btn {
     width: 100%; padding: 10px; border: 1.5px dashed #e0e0de;
     border-radius: 12px; background: none; color: #888; font-size: 13px;
-    cursor: pointer; display: flex; align-items: center;
-    justify-content: center; gap: 6px;
-    transition: border-color 0.15s, background 0.15s, color 0.15s;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    gap: 6px; transition: border-color 0.15s, background 0.15s, color 0.15s;
     margin-bottom: 1.25rem; font-family: inherit;
   }
   .add-btn:hover { border-color: #2563eb; background: #eff6ff; color: #2563eb; }
 
   .result-card {
     background: #fff; border-radius: 12px; border: 1px solid #e8e8e6;
-    padding: 1.1rem 1.25rem; display: flex; align-items: center;
-    justify-content: space-between; gap: 1rem; margin-bottom: 10px;
+    padding: 1.1rem 1.25rem; margin-bottom: 10px;
   }
-  .result-label {
-    font-size: 12px; font-weight: 600; text-transform: uppercase;
-    letter-spacing: 0.5px; color: #888; margin-bottom: 4px;
+
+  .result-top {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
   }
-  .result-num {
-    font-size: 40px; font-weight: 700; color: #1a1a1a;
-    line-height: 1; letter-spacing: -1px;
-  }
+
+  .result-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #888; margin-bottom: 4px; }
+  .result-num { font-size: 40px; font-weight: 700; color: #1a1a1a; line-height: 1; letter-spacing: -1px; }
   .result-sub { font-size: 12px; color: #888; margin-top: 4px; min-height: 16px; }
 
   .result-actions { display: flex; flex-direction: column; gap: 7px; flex-shrink: 0; }
@@ -117,9 +103,34 @@
   }
   .btn-copy { background: #1a1a1a; color: #fff; border-color: #1a1a1a; }
   .btn-copy:hover { background: #333; border-color: #333; }
-  .btn-copy.copied { background: #16a34a; border-color: #16a34a; }
   .btn-clear { background: #fff; color: #888; border-color: #e0e0de; }
   .btn-clear:hover { background: #fef2f2; color: #ef4444; border-color: #fca5a5; }
+
+  .copy-box {
+    display: none;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #f0f0ee;
+    align-items: center;
+    gap: 10px;
+  }
+  .copy-box.visible { display: flex; }
+  .copy-box label { font-size: 12px; color: #888; white-space: nowrap; flex-shrink: 0; }
+  .copy-box input[type="text"] {
+    flex: 1;
+    padding: 7px 12px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1a1a;
+    background: #f0fdf4;
+    border: 1.5px solid #86efac;
+    border-radius: 8px;
+    text-align: center;
+    cursor: text;
+    letter-spacing: -0.5px;
+  }
+  .copy-box input[type="text"]:focus { outline: none; border-color: #16a34a; box-shadow: 0 0 0 3px rgba(22,163,74,0.12); }
+  .copy-hint { font-size: 11px; color: #888; text-align: center; margin-top: 5px; }
 
   .footer-note {
     font-size: 12px; color: #aaa; display: flex;
@@ -129,7 +140,7 @@
 
   @media (max-width: 480px) {
     body { padding: 1rem 0.75rem; }
-    .result-card { flex-direction: column; align-items: flex-start; }
+    .result-top { flex-direction: column; align-items: flex-start; }
     .result-actions { flex-direction: row; width: 100%; }
     .btn { flex: 1; }
   }
@@ -144,7 +155,7 @@
   </div>
 
   <div class="card">
-    <table id="periods-table">
+    <table>
       <thead>
         <tr>
           <th>#</th>
@@ -158,26 +169,36 @@
     </table>
   </div>
 
-  <button class="add-btn" onclick="addRow()" aria-label="Add exposure period">
+  <button class="add-btn" onclick="addRow()">
     <i class="ti ti-plus" style="font-size:15px" aria-hidden="true"></i>
     Add period
   </button>
 
   <div class="result-card">
-    <div>
-      <div class="result-label">Total unique eligible years</div>
-      <div class="result-num" id="total-display">0</div>
-      <div class="result-sub" id="result-sub"></div>
+    <div class="result-top">
+      <div>
+        <div class="result-label">Total unique eligible years</div>
+        <div class="result-num" id="total-display">0</div>
+        <div class="result-sub" id="result-sub"></div>
+      </div>
+      <div class="result-actions">
+        <button class="btn btn-copy" id="copy-btn" onclick="showCopyBox()">
+          <i class="ti ti-copy" style="font-size:14px" aria-hidden="true"></i>
+          Copy result
+        </button>
+        <button class="btn btn-clear" onclick="clearAll()">
+          <i class="ti ti-trash" style="font-size:14px" aria-hidden="true"></i>
+          Clear all
+        </button>
+      </div>
     </div>
-    <div class="result-actions">
-      <button class="btn btn-copy" id="copy-btn" onclick="copyResult()" aria-label="Copy result to clipboard">
-        <i class="ti ti-copy" style="font-size:14px" aria-hidden="true"></i>
-        Copy result
-      </button>
-      <button class="btn btn-clear" onclick="clearAll()" aria-label="Clear all periods">
-        <i class="ti ti-trash" style="font-size:14px" aria-hidden="true"></i>
-        Clear all
-      </button>
+
+    <div class="copy-box" id="copy-box">
+      <label>Select &amp; copy:</label>
+      <input type="text" id="copy-field" readonly onclick="this.select()">
+    </div>
+    <div class="copy-hint" id="copy-hint" style="display:none">
+      Click the number above to select it, then press Ctrl+C (or Cmd+C on Mac)
     </div>
   </div>
 
@@ -191,6 +212,7 @@
 <script>
 var CAP = 1982;
 var rowId = 0;
+var copyBoxVisible = false;
 
 function addRow(s, e) {
   rowId++;
@@ -201,13 +223,11 @@ function addRow(s, e) {
   tr.innerHTML =
     "<td class='row-num'></td>" +
     "<td><input type='number' id='s" + id + "' placeholder='e.g. 1968' min='1900' max='2100'" +
-      (s ? " value='" + s + "'" : "") +
-      " oninput='recalc()' aria-label='Start year'></td>" +
+      (s ? " value='" + s + "'" : "") + " oninput='recalc()' aria-label='Start year'></td>" +
     "<td><input type='number' id='e" + id + "' placeholder='e.g. 1979' min='1900' max='2100'" +
-      (e ? " value='" + e + "'" : "") +
-      " oninput='recalc()' aria-label='End year'></td>" +
+      (e ? " value='" + e + "'" : "") + " oninput='recalc()' aria-label='End year'></td>" +
     "<td class='valid-cell valid-empty' id='v" + id + "'>&#8212;</td>" +
-    "<td><button class='del-btn' onclick='delRow(" + id + ")' aria-label='Remove this period'>" +
+    "<td><button class='del-btn' onclick='delRow(" + id + ")' aria-label='Remove'>" +
       "<i class='ti ti-x' style='font-size:13px' aria-hidden='true'></i></button></td>";
   tbody.appendChild(tr);
   renumber();
@@ -278,13 +298,15 @@ function recalc() {
   var sub = document.getElementById("result-sub");
   if (total > 0 && intervals.length > 1) {
     var raw = 0;
-    for (var j = 0; j < intervals.length; j++) {
-      raw += intervals[j][1] - intervals[j][0] + 1;
-    }
+    for (var j = 0; j < intervals.length; j++) raw += intervals[j][1] - intervals[j][0] + 1;
     var saved = raw - total;
     sub.textContent = saved > 0 ? saved + " overlapping year" + (saved === 1 ? "" : "s") + " merged" : "";
   } else {
     sub.textContent = "";
+  }
+
+  if (copyBoxVisible) {
+    document.getElementById("copy-field").value = total;
   }
 }
 
@@ -297,49 +319,53 @@ function mergeIntervals(ivs) {
       ce = Math.max(ce, ivs[i][1]);
     } else {
       total += ce - cs + 1;
-      cs = ivs[i][0];
-      ce = ivs[i][1];
+      cs = ivs[i][0]; ce = ivs[i][1];
     }
   }
   return total + (ce - cs + 1);
 }
 
-function copyResult() {
+function showCopyBox() {
   var val = document.getElementById("total-display").textContent;
-  var btn = document.getElementById("copy-btn");
+  var box = document.getElementById("copy-box");
+  var hint = document.getElementById("copy-hint");
+  var field = document.getElementById("copy-field");
 
-  function showCopied() {
-    btn.classList.add("copied");
-    btn.innerHTML = "<i class='ti ti-check' style='font-size:14px' aria-hidden='true'></i> Copied!";
-    setTimeout(function() {
-      btn.classList.remove("copied");
-      btn.innerHTML = "<i class='ti ti-copy' style='font-size:14px' aria-hidden='true'></i> Copy result";
-    }, 2000);
-  }
-
-  function fallback() {
-    var tmp = document.createElement("textarea");
-    tmp.value = val;
-    tmp.style.position = "fixed";
-    tmp.style.left = "-9999px";
-    tmp.style.top = "-9999px";
-    document.body.appendChild(tmp);
-    tmp.focus();
-    tmp.select();
-    try { document.execCommand("copy"); showCopied(); } catch(err) {}
-    document.body.removeChild(tmp);
-  }
-
+  // Try clipboard API first (works on GitHub Pages direct load)
   if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(val).then(showCopied).catch(fallback);
+    navigator.clipboard.writeText(val).then(function() {
+      var btn = document.getElementById("copy-btn");
+      btn.innerHTML = "<i class='ti ti-check' style='font-size:14px' aria-hidden='true'></i> Copied!";
+      btn.style.background = "#16a34a";
+      btn.style.borderColor = "#16a34a";
+      setTimeout(function() {
+        btn.innerHTML = "<i class='ti ti-copy' style='font-size:14px' aria-hidden='true'></i> Copy result";
+        btn.style.background = "";
+        btn.style.borderColor = "";
+      }, 2000);
+      return;
+    }).catch(function() {
+      showFallback(val, box, hint, field);
+    });
   } else {
-    fallback();
+    showFallback(val, box, hint, field);
   }
+}
+
+function showFallback(val, box, hint, field) {
+  field.value = val;
+  box.classList.add("visible");
+  hint.style.display = "block";
+  copyBoxVisible = true;
+  setTimeout(function() { field.select(); }, 50);
 }
 
 function clearAll() {
   document.getElementById("rows-body").innerHTML = "";
   rowId = 0;
+  copyBoxVisible = false;
+  document.getElementById("copy-box").classList.remove("visible");
+  document.getElementById("copy-hint").style.display = "none";
   document.getElementById("total-display").textContent = "0";
   document.getElementById("result-sub").textContent = "";
   addRow(); addRow(); addRow();
