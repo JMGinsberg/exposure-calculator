@@ -28,17 +28,30 @@
     display: flex; align-items: center; gap: 8px;
     margin-bottom: 8px; padding: 0 2px;
   }
-  .section-title {
-    font-size: 13px; font-weight: 600; text-transform: uppercase;
-    letter-spacing: 0.6px; color: #444;
-  }
-  .section-badge {
-    font-size: 11px; font-weight: 600; padding: 2px 8px;
-    border-radius: 20px; letter-spacing: 0.3px;
-  }
+  .section-title { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; color: #444; }
+  .section-badge { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 20px; letter-spacing: 0.3px; }
   .badge-primary { background: #dbeafe; color: #1d4ed8; }
   .badge-secondary { background: #f3e8ff; color: #7c3aed; }
   .section-line { flex: 1; height: 1px; background: #e8e8e6; }
+
+  .dob-row {
+    display: flex; align-items: center; gap: 10px;
+    background: #fdf8ff; border: 1px solid #e9d5ff;
+    border-radius: 10px; padding: 10px 14px; margin-bottom: 8px;
+  }
+  .dob-row label { font-size: 13px; color: #6b21a8; font-weight: 500; white-space: nowrap; }
+  .dob-row input[type="number"] {
+    width: 110px; padding: 6px 10px; font-size: 14px; font-weight: 600;
+    border: 1px solid #d8b4fe; border-radius: 7px;
+    background: #fff; color: #1a1a1a;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    -moz-appearance: textfield;
+  }
+  .dob-row input[type="number"]::-webkit-inner-spin-button,
+  .dob-row input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+  .dob-row input[type="number"]:focus { outline: none; border-color: #7c3aed; box-shadow: 0 0 0 3px rgba(124,58,237,0.1); }
+  .dob-note { font-size: 12px; color: #9333ea; flex: 1; }
+  .dob-note span { font-weight: 600; }
 
   .card { background: #fff; border-radius: 12px; border: 1px solid #e8e8e6; overflow: hidden; margin-bottom: 8px; }
 
@@ -151,6 +164,7 @@
     .result-top { flex-direction: column; align-items: flex-start; }
     .result-actions { flex-direction: row; width: 100%; }
     .btn { flex: 1; }
+    .dob-row { flex-wrap: wrap; }
   }
 </style>
 </head>
@@ -198,6 +212,16 @@
       <span class="section-badge badge-secondary">Secondary</span>
       <span class="section-line"></span>
     </div>
+
+    <div class="dob-row">
+      <label for="dob-input">
+        <i class="ti ti-calendar" style="font-size:14px;vertical-align:-2px;margin-right:4px" aria-hidden="true"></i>
+        Client birth year
+      </label>
+      <input type="number" id="dob-input" placeholder="e.g. 1945" min="1900" max="1982" oninput="recalc()">
+      <span class="dob-note" id="dob-note">Only years from birth year onward count.</span>
+    </div>
+
     <div class="card">
       <table>
         <thead class="secondary-head">
@@ -250,7 +274,7 @@
 
   <div class="footer-note">
     <i class="ti ti-info-circle" style="font-size:13px" aria-hidden="true"></i>
-    End years after 1982 are automatically capped to 1982. Periods starting after 1982 contribute 0 eligible years. Overlapping periods across both sections are counted only once.
+    Primary exposure: years after 1982 excluded. Secondary exposure: years before birth year and after 1982 excluded. Overlapping periods across both sections are counted only once.
   </div>
 
 </div>
@@ -260,6 +284,11 @@ var CAP = 1982;
 var ids = { primary: 0, secondary: 0 };
 var copyBoxVisible = false;
 
+function getBirthYear() {
+  var val = parseInt(document.getElementById("dob-input").value);
+  return isNaN(val) ? null : val;
+}
+
 function addRow(section, s, e) {
   ids[section]++;
   var id = section + "-" + ids[section];
@@ -268,9 +297,9 @@ function addRow(section, s, e) {
   tr.id = "row-" + id;
   tr.innerHTML =
     "<td class='row-num'></td>" +
-    "<td><input type='number' id='s-" + id + "' placeholder='e.g. 1968' min='1900' max='2100'" +
+    "<td><input type='number' id='s-" + id + "' placeholder='e.g. 1948' min='1900' max='2100'" +
       (s ? " value='" + s + "'" : "") + " oninput='recalc()' aria-label='Start year'></td>" +
-    "<td><input type='number' id='e-" + id + "' placeholder='e.g. 1979' min='1900' max='2100'" +
+    "<td><input type='number' id='e-" + id + "' placeholder='e.g. 1975' min='1900' max='2100'" +
       (e ? " value='" + e + "'" : "") + " oninput='recalc()' aria-label='End year'></td>" +
     "<td class='valid-cell valid-empty' id='v-" + id + "'>&#8212;</td>" +
     "<td><button class='del-btn' onclick='delRow(\"" + id + "\", \"" + section + "\")' aria-label='Remove'>" +
@@ -296,8 +325,10 @@ function renumber(section) {
 }
 
 function getIntervals(section) {
+  var birthYear = getBirthYear();
   var rows = document.querySelectorAll("#rows-" + section + " tr");
   var intervals = [];
+
   for (var i = 0; i < rows.length; i++) {
     var id = rows[i].id.replace("row-", "");
     var si = document.getElementById("s-" + id);
@@ -314,26 +345,51 @@ function getIntervals(section) {
     if (isNaN(s) || isNaN(e)) {
       cell.textContent = "\u2014";
       cell.className = "valid-cell valid-empty";
-    } else if (s > e) {
+      continue;
+    }
+
+    if (s > e) {
       cell.textContent = "Check years";
       cell.className = "valid-cell valid-err";
       si.classList.add("input-err");
       ei.classList.add("input-err");
-    } else if (s > CAP) {
+      continue;
+    }
+
+    // Apply birth year floor for secondary
+    var floorYear = (section === "secondary" && birthYear !== null) ? birthYear : null;
+    var effectiveS = floorYear !== null ? Math.max(s, floorYear) : s;
+    var effectiveE = Math.min(e, CAP);
+
+    // Entirely before birth year or entirely after cap
+    if (effectiveS > CAP || (floorYear !== null && e < floorYear) || effectiveS > effectiveE) {
       cell.textContent = "0";
       cell.className = "valid-cell valid-zero";
-    } else {
-      var cappedE = Math.min(e, CAP);
-      var yrs = cappedE - s + 1;
-      cell.textContent = yrs;
-      cell.className = "valid-cell valid-ok";
-      intervals.push([s, cappedE]);
+      continue;
     }
+
+    var yrs = effectiveE - effectiveS + 1;
+    cell.textContent = yrs;
+    cell.className = "valid-cell valid-ok";
+    intervals.push([effectiveS, effectiveE]);
   }
   return intervals;
 }
 
 function recalc() {
+  // Update DOB note
+  var birthYear = getBirthYear();
+  var dobNote = document.getElementById("dob-note");
+  if (birthYear !== null) {
+    if (birthYear > CAP) {
+      dobNote.innerHTML = "<span style='color:#ef4444'>Birth year must be 1982 or earlier.</span>";
+    } else {
+      dobNote.innerHTML = "Counting secondary years from <span>" + birthYear + "</span> to 1982.";
+    }
+  } else {
+    dobNote.innerHTML = "Enter birth year to apply floor to secondary periods.";
+  }
+
   var iv1 = getIntervals("primary");
   var iv2 = getIntervals("secondary");
   var all = iv1.concat(iv2);
@@ -407,6 +463,8 @@ function showCopyBox() {
 function clearAll() {
   document.getElementById("rows-primary").innerHTML = "";
   document.getElementById("rows-secondary").innerHTML = "";
+  document.getElementById("dob-input").value = "";
+  document.getElementById("dob-note").innerHTML = "Enter birth year to apply floor to secondary periods.";
   ids = { primary: 0, secondary: 0 };
   copyBoxVisible = false;
   document.getElementById("copy-box").classList.remove("visible");
