@@ -22,13 +22,31 @@
   .header h1 { font-size: 22px; font-weight: 600; color: #1a1a1a; margin-bottom: 6px; letter-spacing: -0.3px; }
   .header p { font-size: 13px; color: #666; line-height: 1.5; }
 
-  .card { background: #fff; border-radius: 12px; border: 1px solid #e8e8e6; overflow: hidden; margin-bottom: 10px; }
+  .section { margin-bottom: 1.25rem; }
+
+  .section-header {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 8px; padding: 0 2px;
+  }
+  .section-title {
+    font-size: 13px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.6px; color: #444;
+  }
+  .section-badge {
+    font-size: 11px; font-weight: 600; padding: 2px 8px;
+    border-radius: 20px; letter-spacing: 0.3px;
+  }
+  .badge-primary { background: #dbeafe; color: #1d4ed8; }
+  .badge-secondary { background: #f3e8ff; color: #7c3aed; }
+  .section-line { flex: 1; height: 1px; background: #e8e8e6; }
+
+  .card { background: #fff; border-radius: 12px; border: 1px solid #e8e8e6; overflow: hidden; margin-bottom: 8px; }
 
   table { width: 100%; border-collapse: collapse; table-layout: fixed; }
 
   thead th {
     font-size: 11px; font-weight: 600; text-transform: uppercase;
-    letter-spacing: 0.5px; color: #888; padding: 10px 12px;
+    letter-spacing: 0.5px; color: #888; padding: 9px 12px;
     background: #fafaf9; border-bottom: 1px solid #e8e8e6; text-align: left;
   }
   thead th:nth-child(1) { width: 40px; text-align: center; }
@@ -36,6 +54,9 @@
   thead th:nth-child(3) { width: 26%; }
   thead th:nth-child(4) { width: 20%; text-align: center; }
   thead th:nth-child(5) { width: 40px; }
+
+  .primary-head { border-top: 3px solid #2563eb; }
+  .secondary-head { border-top: 3px solid #7c3aed; }
 
   tbody tr { border-bottom: 1px solid #f0f0ee; transition: background 0.1s; }
   tbody tr:last-child { border-bottom: none; }
@@ -71,23 +92,22 @@
   .del-btn:hover { background: #fef2f2; color: #ef4444; }
 
   .add-btn {
-    width: 100%; padding: 10px; border: 1.5px dashed #e0e0de;
-    border-radius: 12px; background: none; color: #888; font-size: 13px;
+    width: 100%; padding: 9px; border: 1.5px dashed #e0e0de;
+    border-radius: 10px; background: none; color: #888; font-size: 13px;
     cursor: pointer; display: flex; align-items: center; justify-content: center;
     gap: 6px; transition: border-color 0.15s, background 0.15s, color 0.15s;
-    margin-bottom: 1.25rem; font-family: inherit;
+    font-family: inherit;
   }
-  .add-btn:hover { border-color: #2563eb; background: #eff6ff; color: #2563eb; }
+  .add-btn-primary:hover { border-color: #2563eb; background: #eff6ff; color: #2563eb; }
+  .add-btn-secondary:hover { border-color: #7c3aed; background: #f5f3ff; color: #7c3aed; }
+
+  .divider { height: 1px; background: #e8e8e6; margin: 1.5rem 0; }
 
   .result-card {
     background: #fff; border-radius: 12px; border: 1px solid #e8e8e6;
     padding: 1.1rem 1.25rem; margin-bottom: 10px;
   }
-
-  .result-top {
-    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-  }
-
+  .result-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
   .result-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #888; margin-bottom: 4px; }
   .result-num { font-size: 40px; font-weight: 700; color: #1a1a1a; line-height: 1; letter-spacing: -1px; }
   .result-sub { font-size: 12px; color: #888; margin-top: 4px; min-height: 16px; }
@@ -107,30 +127,18 @@
   .btn-clear:hover { background: #fef2f2; color: #ef4444; border-color: #fca5a5; }
 
   .copy-box {
-    display: none;
-    margin-top: 12px;
-    padding-top: 12px;
-    border-top: 1px solid #f0f0ee;
-    align-items: center;
-    gap: 10px;
+    display: none; margin-top: 12px; padding-top: 12px;
+    border-top: 1px solid #f0f0ee; align-items: center; gap: 10px;
   }
   .copy-box.visible { display: flex; }
   .copy-box label { font-size: 12px; color: #888; white-space: nowrap; flex-shrink: 0; }
   .copy-box input[type="text"] {
-    flex: 1;
-    padding: 7px 12px;
-    font-size: 18px;
-    font-weight: 700;
-    color: #1a1a1a;
-    background: #f0fdf4;
-    border: 1.5px solid #86efac;
-    border-radius: 8px;
-    text-align: center;
-    cursor: text;
-    letter-spacing: -0.5px;
+    flex: 1; padding: 7px 12px; font-size: 18px; font-weight: 700;
+    color: #1a1a1a; background: #f0fdf4; border: 1.5px solid #86efac;
+    border-radius: 8px; text-align: center; cursor: text; letter-spacing: -0.5px;
   }
   .copy-box input[type="text"]:focus { outline: none; border-color: #16a34a; box-shadow: 0 0 0 3px rgba(22,163,74,0.12); }
-  .copy-hint { font-size: 11px; color: #888; text-align: center; margin-top: 5px; }
+  .copy-hint { font-size: 11px; color: #888; text-align: center; margin-top: 5px; display: none; }
 
   .footer-note {
     font-size: 12px; color: #aaa; display: flex;
@@ -151,29 +159,68 @@
 
   <div class="header">
     <h1>Exposure years calculator</h1>
-    <p>Enter start and end years for each exposure period. Overlapping periods are merged automatically. Years after 1982 are excluded from the total.</p>
+    <p>Enter start and end years for each exposure period. Overlapping periods across both sections are merged automatically. Years after 1982 are excluded from the total.</p>
   </div>
 
-  <div class="card">
-    <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Start year</th>
-          <th>End year</th>
-          <th>Eligible yrs</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody id="rows-body"></tbody>
-    </table>
+  <!-- Primary Exposure -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title">Primary Exposure</span>
+      <span class="section-badge badge-primary">Primary</span>
+      <span class="section-line"></span>
+    </div>
+    <div class="card">
+      <table>
+        <thead class="primary-head">
+          <tr>
+            <th>#</th>
+            <th>Start year</th>
+            <th>End year</th>
+            <th>Eligible yrs</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="rows-primary"></tbody>
+      </table>
+    </div>
+    <button class="add-btn add-btn-primary" onclick="addRow('primary')">
+      <i class="ti ti-plus" style="font-size:15px" aria-hidden="true"></i>
+      Add period
+    </button>
   </div>
 
-  <button class="add-btn" onclick="addRow()">
-    <i class="ti ti-plus" style="font-size:15px" aria-hidden="true"></i>
-    Add period
-  </button>
+  <div class="divider"></div>
 
+  <!-- Secondary Exposure -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title">Secondary Exposure</span>
+      <span class="section-badge badge-secondary">Secondary</span>
+      <span class="section-line"></span>
+    </div>
+    <div class="card">
+      <table>
+        <thead class="secondary-head">
+          <tr>
+            <th>#</th>
+            <th>Start year</th>
+            <th>End year</th>
+            <th>Eligible yrs</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="rows-secondary"></tbody>
+      </table>
+    </div>
+    <button class="add-btn add-btn-secondary" onclick="addRow('secondary')">
+      <i class="ti ti-plus" style="font-size:15px" aria-hidden="true"></i>
+      Add period
+    </button>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Result -->
   <div class="result-card">
     <div class="result-top">
       <div>
@@ -192,113 +239,112 @@
         </button>
       </div>
     </div>
-
     <div class="copy-box" id="copy-box">
       <label>Select &amp; copy:</label>
       <input type="text" id="copy-field" readonly onclick="this.select()">
     </div>
-    <div class="copy-hint" id="copy-hint" style="display:none">
+    <div class="copy-hint" id="copy-hint">
       Click the number above to select it, then press Ctrl+C (or Cmd+C on Mac)
     </div>
   </div>
 
   <div class="footer-note">
     <i class="ti ti-info-circle" style="font-size:13px" aria-hidden="true"></i>
-    End years after 1982 are automatically capped to 1982. Periods starting after 1982 contribute 0 eligible years.
+    End years after 1982 are automatically capped to 1982. Periods starting after 1982 contribute 0 eligible years. Overlapping periods across both sections are counted only once.
   </div>
 
 </div>
 
 <script>
 var CAP = 1982;
-var rowId = 0;
+var ids = { primary: 0, secondary: 0 };
 var copyBoxVisible = false;
 
-function addRow(s, e) {
-  rowId++;
-  var id = rowId;
-  var tbody = document.getElementById("rows-body");
+function addRow(section, s, e) {
+  ids[section]++;
+  var id = section + "-" + ids[section];
+  var tbody = document.getElementById("rows-" + section);
   var tr = document.createElement("tr");
   tr.id = "row-" + id;
   tr.innerHTML =
     "<td class='row-num'></td>" +
-    "<td><input type='number' id='s" + id + "' placeholder='e.g. 1968' min='1900' max='2100'" +
+    "<td><input type='number' id='s-" + id + "' placeholder='e.g. 1968' min='1900' max='2100'" +
       (s ? " value='" + s + "'" : "") + " oninput='recalc()' aria-label='Start year'></td>" +
-    "<td><input type='number' id='e" + id + "' placeholder='e.g. 1979' min='1900' max='2100'" +
+    "<td><input type='number' id='e-" + id + "' placeholder='e.g. 1979' min='1900' max='2100'" +
       (e ? " value='" + e + "'" : "") + " oninput='recalc()' aria-label='End year'></td>" +
-    "<td class='valid-cell valid-empty' id='v" + id + "'>&#8212;</td>" +
-    "<td><button class='del-btn' onclick='delRow(" + id + ")' aria-label='Remove'>" +
+    "<td class='valid-cell valid-empty' id='v-" + id + "'>&#8212;</td>" +
+    "<td><button class='del-btn' onclick='delRow(\"" + id + "\", \"" + section + "\")' aria-label='Remove'>" +
       "<i class='ti ti-x' style='font-size:13px' aria-hidden='true'></i></button></td>";
   tbody.appendChild(tr);
-  renumber();
+  renumber(section);
   recalc();
-  if (!s) document.getElementById("s" + id).focus();
+  if (!s) document.getElementById("s-" + id).focus();
 }
 
-function delRow(id) {
+function delRow(id, section) {
   var el = document.getElementById("row-" + id);
   if (el) el.remove();
-  renumber();
+  renumber(section);
   recalc();
 }
 
-function renumber() {
-  var rows = document.querySelectorAll("#rows-body tr");
+function renumber(section) {
+  var rows = document.querySelectorAll("#rows-" + section + " tr");
   for (var i = 0; i < rows.length; i++) {
     rows[i].querySelector(".row-num").textContent = i + 1;
   }
 }
 
-function rowEligible(s, e) {
-  if (isNaN(s) || isNaN(e)) return null;
-  if (s > e) return "err";
-  if (s > CAP) return 0;
-  return Math.min(e, CAP) - s + 1;
-}
-
-function recalc() {
-  var rows = document.querySelectorAll("#rows-body tr");
+function getIntervals(section) {
+  var rows = document.querySelectorAll("#rows-" + section + " tr");
   var intervals = [];
-
   for (var i = 0; i < rows.length; i++) {
     var id = rows[i].id.replace("row-", "");
-    var si = document.getElementById("s" + id);
-    var ei = document.getElementById("e" + id);
-    var cell = document.getElementById("v" + id);
+    var si = document.getElementById("s-" + id);
+    var ei = document.getElementById("e-" + id);
+    var cell = document.getElementById("v-" + id);
     if (!si || !ei || !cell) continue;
 
     var s = parseInt(si.value);
     var e = parseInt(ei.value);
-    var res = rowEligible(s, e);
 
     si.classList.remove("input-err");
     ei.classList.remove("input-err");
 
-    if (res === null) {
+    if (isNaN(s) || isNaN(e)) {
       cell.textContent = "\u2014";
       cell.className = "valid-cell valid-empty";
-    } else if (res === "err") {
+    } else if (s > e) {
       cell.textContent = "Check years";
       cell.className = "valid-cell valid-err";
       si.classList.add("input-err");
       ei.classList.add("input-err");
-    } else if (res === 0) {
+    } else if (s > CAP) {
       cell.textContent = "0";
       cell.className = "valid-cell valid-zero";
     } else {
-      cell.textContent = res;
+      var cappedE = Math.min(e, CAP);
+      var yrs = cappedE - s + 1;
+      cell.textContent = yrs;
       cell.className = "valid-cell valid-ok";
-      intervals.push([s, Math.min(e, CAP)]);
+      intervals.push([s, cappedE]);
     }
   }
+  return intervals;
+}
 
-  var total = mergeIntervals(intervals);
+function recalc() {
+  var iv1 = getIntervals("primary");
+  var iv2 = getIntervals("secondary");
+  var all = iv1.concat(iv2);
+
+  var total = mergeIntervals(all);
   document.getElementById("total-display").textContent = total;
 
   var sub = document.getElementById("result-sub");
-  if (total > 0 && intervals.length > 1) {
+  if (total > 0 && all.length > 1) {
     var raw = 0;
-    for (var j = 0; j < intervals.length; j++) raw += intervals[j][1] - intervals[j][0] + 1;
+    for (var j = 0; j < all.length; j++) raw += all[j][1] - all[j][0] + 1;
     var saved = raw - total;
     sub.textContent = saved > 0 ? saved + " overlapping year" + (saved === 1 ? "" : "s") + " merged" : "";
   } else {
@@ -327,51 +373,52 @@ function mergeIntervals(ivs) {
 
 function showCopyBox() {
   var val = document.getElementById("total-display").textContent;
-  var box = document.getElementById("copy-box");
-  var hint = document.getElementById("copy-hint");
-  var field = document.getElementById("copy-field");
+  var btn = document.getElementById("copy-btn");
 
-  // Try clipboard API first (works on GitHub Pages direct load)
+  function showCopied() {
+    btn.innerHTML = "<i class='ti ti-check' style='font-size:14px' aria-hidden='true'></i> Copied!";
+    btn.style.background = "#16a34a";
+    btn.style.borderColor = "#16a34a";
+    setTimeout(function() {
+      btn.innerHTML = "<i class='ti ti-copy' style='font-size:14px' aria-hidden='true'></i> Copy result";
+      btn.style.background = "";
+      btn.style.borderColor = "";
+    }, 2000);
+  }
+
+  function showFallback() {
+    var field = document.getElementById("copy-field");
+    var box = document.getElementById("copy-box");
+    var hint = document.getElementById("copy-hint");
+    field.value = val;
+    box.classList.add("visible");
+    hint.style.display = "block";
+    copyBoxVisible = true;
+    setTimeout(function() { field.select(); }, 50);
+  }
+
   if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(val).then(function() {
-      var btn = document.getElementById("copy-btn");
-      btn.innerHTML = "<i class='ti ti-check' style='font-size:14px' aria-hidden='true'></i> Copied!";
-      btn.style.background = "#16a34a";
-      btn.style.borderColor = "#16a34a";
-      setTimeout(function() {
-        btn.innerHTML = "<i class='ti ti-copy' style='font-size:14px' aria-hidden='true'></i> Copy result";
-        btn.style.background = "";
-        btn.style.borderColor = "";
-      }, 2000);
-      return;
-    }).catch(function() {
-      showFallback(val, box, hint, field);
-    });
+    navigator.clipboard.writeText(val).then(showCopied).catch(showFallback);
   } else {
-    showFallback(val, box, hint, field);
+    showFallback();
   }
 }
 
-function showFallback(val, box, hint, field) {
-  field.value = val;
-  box.classList.add("visible");
-  hint.style.display = "block";
-  copyBoxVisible = true;
-  setTimeout(function() { field.select(); }, 50);
-}
-
 function clearAll() {
-  document.getElementById("rows-body").innerHTML = "";
-  rowId = 0;
+  document.getElementById("rows-primary").innerHTML = "";
+  document.getElementById("rows-secondary").innerHTML = "";
+  ids = { primary: 0, secondary: 0 };
   copyBoxVisible = false;
   document.getElementById("copy-box").classList.remove("visible");
   document.getElementById("copy-hint").style.display = "none";
   document.getElementById("total-display").textContent = "0";
   document.getElementById("result-sub").textContent = "";
-  addRow(); addRow(); addRow();
+  addRow("primary"); addRow("primary"); addRow("primary");
+  addRow("secondary"); addRow("secondary"); addRow("secondary");
 }
 
-addRow(); addRow(); addRow();
+addRow("primary"); addRow("primary"); addRow("primary");
+addRow("secondary"); addRow("secondary"); addRow("secondary");
 </script>
 </body>
 </html>
