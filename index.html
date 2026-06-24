@@ -34,6 +34,23 @@
   .badge-secondary { background: #f3e8ff; color: #7c3aed; }
   .section-line { flex: 1; height: 1px; background: #e8e8e6; }
 
+  .section-status {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #fff; border-radius: 10px; border: 1px solid #e8e8e6;
+    padding: 10px 14px; margin-bottom: 8px;
+  }
+  .section-status-left { font-size: 13px; color: #888; }
+  .section-status-left strong { color: #1a1a1a; }
+  .status-pill {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 12px; font-weight: 600; padding: 4px 12px;
+    border-radius: 20px; letter-spacing: 0.2px;
+  }
+  .status-pill i { font-size: 13px; }
+  .status-sufficient { background: #dcfce7; color: #15803d; }
+  .status-insufficient { background: #fee2e2; color: #dc2626; }
+  .status-empty { background: #f3f4f6; color: #9ca3af; }
+
   .dob-row {
     display: flex; align-items: center; gap: 10px;
     background: #fdf8ff; border: 1px solid #e9d5ff;
@@ -120,10 +137,19 @@
     background: #fff; border-radius: 12px; border: 1px solid #e8e8e6;
     padding: 1.1rem 1.25rem; margin-bottom: 10px;
   }
-  .result-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-  .result-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #888; margin-bottom: 4px; }
-  .result-num { font-size: 40px; font-weight: 700; color: #1a1a1a; line-height: 1; letter-spacing: -1px; }
-  .result-sub { font-size: 12px; color: #888; margin-top: 4px; min-height: 16px; }
+  .result-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 0; }
+  .result-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #888; margin-bottom: 8px; display: block; }
+  .result-sub { font-size: 12px; color: #888; margin-top: 8px; min-height: 16px; }
+
+  .result-pill {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 18px; font-weight: 700; padding: 8px 18px;
+    border-radius: 30px; letter-spacing: -0.2px;
+  }
+  .result-pill i { font-size: 20px; }
+  .result-pill.sufficient { background: #dcfce7; color: #15803d; }
+  .result-pill.insufficient { background: #fee2e2; color: #dc2626; }
+  .result-pill.empty { background: #f3f4f6; color: #9ca3af; font-size: 15px; font-weight: 500; }
 
   .result-actions { display: flex; flex-direction: column; gap: 7px; flex-shrink: 0; }
 
@@ -146,9 +172,9 @@
   .copy-box.visible { display: flex; }
   .copy-box label { font-size: 12px; color: #888; white-space: nowrap; flex-shrink: 0; }
   .copy-box input[type="text"] {
-    flex: 1; padding: 7px 12px; font-size: 18px; font-weight: 700;
+    flex: 1; padding: 7px 12px; font-size: 14px; font-weight: 600;
     color: #1a1a1a; background: #f0fdf4; border: 1.5px solid #86efac;
-    border-radius: 8px; text-align: center; cursor: text; letter-spacing: -0.5px;
+    border-radius: 8px; text-align: center; cursor: text;
   }
   .copy-box input[type="text"]:focus { outline: none; border-color: #16a34a; box-shadow: 0 0 0 3px rgba(22,163,74,0.12); }
   .copy-hint { font-size: 11px; color: #888; text-align: center; margin-top: 5px; display: none; }
@@ -183,6 +209,16 @@
       <span class="section-badge badge-primary">Primary</span>
       <span class="section-line"></span>
     </div>
+
+    <div class="section-status">
+      <div class="section-status-left">
+        Section total: <strong id="primary-total">0</strong> yr<span id="primary-plural">s</span>
+      </div>
+      <div class="status-pill status-empty" id="primary-status">
+        <i class="ti ti-minus" aria-hidden="true"></i> No data
+      </div>
+    </div>
+
     <div class="card">
       <table>
         <thead class="primary-head">
@@ -219,7 +255,16 @@
         Client birth year
       </label>
       <input type="number" id="dob-input" placeholder="e.g. 1945" min="1900" max="1982" oninput="recalc()">
-      <span class="dob-note" id="dob-note">Only years from birth year onward count.</span>
+      <span class="dob-note" id="dob-note">Enter birth year to apply floor to secondary periods.</span>
+    </div>
+
+    <div class="section-status">
+      <div class="section-status-left">
+        Section total: <strong id="secondary-total">0</strong> yr<span id="secondary-plural">s</span>
+      </div>
+      <div class="status-pill status-empty" id="secondary-status">
+        <i class="ti ti-minus" aria-hidden="true"></i> No data
+      </div>
     </div>
 
     <div class="card">
@@ -246,11 +291,10 @@
 
   <!-- Result -->
   <div class="result-card">
+    <div class="result-label">Total unique eligible years (combined)</div>
     <div class="result-top">
-      <div>
-        <div class="result-label">Total unique eligible years</div>
-        <div class="result-num" id="total-display">0</div>
-        <div class="result-sub" id="result-sub"></div>
+      <div id="total-pill" class="result-pill empty">
+        <i class="ti ti-minus" aria-hidden="true"></i> No data entered
       </div>
       <div class="result-actions">
         <button class="btn btn-copy" id="copy-btn" onclick="showCopyBox()">
@@ -263,24 +307,26 @@
         </button>
       </div>
     </div>
+    <div class="result-sub" id="result-sub"></div>
     <div class="copy-box" id="copy-box">
       <label>Select &amp; copy:</label>
       <input type="text" id="copy-field" readonly onclick="this.select()">
     </div>
     <div class="copy-hint" id="copy-hint">
-      Click the number above to select it, then press Ctrl+C (or Cmd+C on Mac)
+      Click the field above to select it, then press Ctrl+C (or Cmd+C on Mac)
     </div>
   </div>
 
   <div class="footer-note">
     <i class="ti ti-info-circle" style="font-size:13px" aria-hidden="true"></i>
-    Primary exposure: years after 1982 excluded. Secondary exposure: years before birth year and after 1982 excluded. Overlapping periods across both sections are counted only once.
+    Sufficient usage = 5 or more eligible years. Primary: years after 1982 excluded. Secondary: years before birth year and after 1982 excluded. Overlapping periods across both sections are counted only once in the combined total.
   </div>
 
 </div>
 
 <script>
 var CAP = 1982;
+var THRESHOLD = 5;
 var ids = { primary: 0, secondary: 0 };
 var copyBoxVisible = false;
 
@@ -324,6 +370,17 @@ function renumber(section) {
   }
 }
 
+function hasAnyData(section) {
+  var rows = document.querySelectorAll("#rows-" + section + " tr");
+  for (var i = 0; i < rows.length; i++) {
+    var id = rows[i].id.replace("row-", "");
+    var si = document.getElementById("s-" + id);
+    var ei = document.getElementById("e-" + id);
+    if (si && ei && (si.value !== "" || ei.value !== "")) return true;
+  }
+  return false;
+}
+
 function getIntervals(section) {
   var birthYear = getBirthYear();
   var rows = document.querySelectorAll("#rows-" + section + " tr");
@@ -356,12 +413,10 @@ function getIntervals(section) {
       continue;
     }
 
-    // Apply birth year floor for secondary
     var floorYear = (section === "secondary" && birthYear !== null) ? birthYear : null;
     var effectiveS = floorYear !== null ? Math.max(s, floorYear) : s;
     var effectiveE = Math.min(e, CAP);
 
-    // Entirely before birth year or entirely after cap
     if (effectiveS > CAP || (floorYear !== null && e < floorYear) || effectiveS > effectiveE) {
       cell.textContent = "0";
       cell.className = "valid-cell valid-zero";
@@ -374,42 +429,6 @@ function getIntervals(section) {
     intervals.push([effectiveS, effectiveE]);
   }
   return intervals;
-}
-
-function recalc() {
-  // Update DOB note
-  var birthYear = getBirthYear();
-  var dobNote = document.getElementById("dob-note");
-  if (birthYear !== null) {
-    if (birthYear > CAP) {
-      dobNote.innerHTML = "<span style='color:#ef4444'>Birth year must be 1982 or earlier.</span>";
-    } else {
-      dobNote.innerHTML = "Counting secondary years from <span>" + birthYear + "</span> to 1982.";
-    }
-  } else {
-    dobNote.innerHTML = "Enter birth year to apply floor to secondary periods.";
-  }
-
-  var iv1 = getIntervals("primary");
-  var iv2 = getIntervals("secondary");
-  var all = iv1.concat(iv2);
-
-  var total = mergeIntervals(all);
-  document.getElementById("total-display").textContent = total;
-
-  var sub = document.getElementById("result-sub");
-  if (total > 0 && all.length > 1) {
-    var raw = 0;
-    for (var j = 0; j < all.length; j++) raw += all[j][1] - all[j][0] + 1;
-    var saved = raw - total;
-    sub.textContent = saved > 0 ? saved + " overlapping year" + (saved === 1 ? "" : "s") + " merged" : "";
-  } else {
-    sub.textContent = "";
-  }
-
-  if (copyBoxVisible) {
-    document.getElementById("copy-field").value = total;
-  }
 }
 
 function mergeIntervals(ivs) {
@@ -427,9 +446,99 @@ function mergeIntervals(ivs) {
   return total + (ce - cs + 1);
 }
 
+function setStatusPill(elId, total, hasData) {
+  var el = document.getElementById(elId);
+  if (!hasData) {
+    el.className = "status-pill status-empty";
+    el.innerHTML = "<i class='ti ti-minus' aria-hidden='true'></i> No data";
+  } else if (total >= THRESHOLD) {
+    el.className = "status-pill status-sufficient";
+    el.innerHTML = "<i class='ti ti-circle-check' aria-hidden='true'></i> Sufficient Usage";
+  } else {
+    el.className = "status-pill status-insufficient";
+    el.innerHTML = "<i class='ti ti-circle-x' aria-hidden='true'></i> Insufficient Usage";
+  }
+}
+
+function setTotalPill(total, hasData) {
+  var el = document.getElementById("total-pill");
+  if (!hasData) {
+    el.className = "result-pill empty";
+    el.innerHTML = "<i class='ti ti-minus' aria-hidden='true'></i> No data entered";
+  } else if (total >= THRESHOLD) {
+    el.className = "result-pill sufficient";
+    el.innerHTML = "<i class='ti ti-circle-check' aria-hidden='true'></i> Sufficient Usage &mdash; " + total + " yr" + (total === 1 ? "" : "s");
+  } else {
+    el.className = "result-pill insufficient";
+    el.innerHTML = "<i class='ti ti-circle-x' aria-hidden='true'></i> Insufficient Usage &mdash; " + total + " yr" + (total === 1 ? "" : "s");
+  }
+}
+
+function recalc() {
+  // DOB note
+  var birthYear = getBirthYear();
+  var dobNote = document.getElementById("dob-note");
+  if (birthYear !== null) {
+    if (birthYear > CAP) {
+      dobNote.innerHTML = "<span style='color:#ef4444'>Birth year must be 1982 or earlier.</span>";
+    } else {
+      dobNote.innerHTML = "Counting secondary years from <span>" + birthYear + "</span> to 1982.";
+    }
+  } else {
+    dobNote.innerHTML = "Enter birth year to apply floor to secondary periods.";
+  }
+
+  // Get intervals
+  var iv1 = getIntervals("primary");
+  var iv2 = getIntervals("secondary");
+
+  // Section totals (independent merge per section)
+  var primaryTotal = mergeIntervals(iv1.slice());
+  var secondaryTotal = mergeIntervals(iv2.slice());
+
+  var primaryHasData = hasAnyData("primary");
+  var secondaryHasData = hasAnyData("secondary");
+
+  // Update section totals
+  document.getElementById("primary-total").textContent = primaryTotal;
+  document.getElementById("primary-plural").textContent = primaryTotal === 1 ? "" : "s";
+  document.getElementById("secondary-total").textContent = secondaryTotal;
+  document.getElementById("secondary-plural").textContent = secondaryTotal === 1 ? "" : "s";
+
+  // Section status pills
+  setStatusPill("primary-status", primaryTotal, primaryHasData);
+  setStatusPill("secondary-status", secondaryTotal, secondaryHasData);
+
+  // Combined total (deduplicated across both)
+  var all = iv1.concat(iv2);
+  var combinedTotal = mergeIntervals(all);
+  var anyData = primaryHasData || secondaryHasData;
+
+  setTotalPill(combinedTotal, anyData);
+
+  // Merged years note
+  var sub = document.getElementById("result-sub");
+  if (combinedTotal > 0 && all.length > 1) {
+    var raw = 0;
+    for (var j = 0; j < all.length; j++) raw += all[j][1] - all[j][0] + 1;
+    var saved = raw - combinedTotal;
+    sub.textContent = saved > 0 ? saved + " overlapping year" + (saved === 1 ? "" : "s") + " merged across sections" : "";
+  } else {
+    sub.textContent = "";
+  }
+
+  if (copyBoxVisible) {
+    document.getElementById("copy-field").value = combinedTotal;
+  }
+}
+
 function showCopyBox() {
-  var val = document.getElementById("total-display").textContent;
+  var pillEl = document.getElementById("total-pill");
   var btn = document.getElementById("copy-btn");
+  // Extract just the year number from the pill text
+  var pillText = pillEl.textContent || "";
+  var match = pillText.match(/\d+/);
+  var val = match ? match[0] : "0";
 
   function showCopied() {
     btn.innerHTML = "<i class='ti ti-check' style='font-size:14px' aria-hidden='true'></i> Copied!";
@@ -469,10 +578,10 @@ function clearAll() {
   copyBoxVisible = false;
   document.getElementById("copy-box").classList.remove("visible");
   document.getElementById("copy-hint").style.display = "none";
-  document.getElementById("total-display").textContent = "0";
   document.getElementById("result-sub").textContent = "";
   addRow("primary"); addRow("primary"); addRow("primary");
   addRow("secondary"); addRow("secondary"); addRow("secondary");
+  recalc();
 }
 
 addRow("primary"); addRow("primary"); addRow("primary");
