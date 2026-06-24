@@ -452,10 +452,10 @@ function setStatusPill(elId, total, hasData) {
     el.innerHTML = "<i class='ti ti-minus' aria-hidden='true'></i> No data";
   } else if (total >= THRESHOLD) {
     el.className = "status-pill status-sufficient";
-    el.innerHTML = "<i class='ti ti-circle-check' aria-hidden='true'></i> Sufficient Usage";
+    el.innerHTML = "<i class='ti ti-circle-check' aria-hidden='true'></i> Sufficient Exposure";
   } else {
     el.className = "status-pill status-insufficient";
-    el.innerHTML = "<i class='ti ti-circle-x' aria-hidden='true'></i> Insufficient Usage";
+    el.innerHTML = "<i class='ti ti-circle-x' aria-hidden='true'></i> Insufficient Exposure";
   }
 }
 
@@ -466,10 +466,10 @@ function setTotalPill(total, hasData) {
     el.innerHTML = "<i class='ti ti-minus' aria-hidden='true'></i> No data entered";
   } else if (total >= THRESHOLD) {
     el.className = "result-pill sufficient";
-    el.innerHTML = "<i class='ti ti-circle-check' aria-hidden='true'></i> Sufficient Usage &mdash; " + total + " yr" + (total === 1 ? "" : "s");
+    el.innerHTML = "<i class='ti ti-circle-check' aria-hidden='true'></i> Sufficient Exposure &mdash; " + total + " yr" + (total === 1 ? "" : "s");
   } else {
     el.className = "result-pill insufficient";
-    el.innerHTML = "<i class='ti ti-circle-x' aria-hidden='true'></i> Insufficient Usage &mdash; " + total + " yr" + (total === 1 ? "" : "s");
+    el.innerHTML = "<i class='ti ti-circle-x' aria-hidden='true'></i> Insufficient Exposure &mdash; " + total + " yr" + (total === 1 ? "" : "s");
   }
 }
 
